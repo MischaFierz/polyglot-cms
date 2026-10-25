@@ -1,0 +1,31 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/api.Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      CMS_ADMIN_EMAIL: admin@example.com
+      CMS_ADMIN_PASSWORD: ${CMS_ADMIN_PASSWORD:-admin}
+    volumes:
+      - data:/data
+      - uploads:/data/uploads
+
+  site:
+    build:
+      context: .
+      dockerfile: docker/site.Dockerfile
+    ports:
+      - "8000:80"
+    environment:
+      CMS_SITE_URL: http://localhost:8000
+    volumes:
+      # Uploads written by the API are served directly by Apache.
+      - uploads:/var/www/site/public/uploads:ro
+    depends_on:
+      - api
+
+volumes:
+  data:
+  uploads:

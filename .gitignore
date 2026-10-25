@@ -1,0 +1,11 @@
+/api/cms.db*
+/api/cms-api
+/api/cms-api.exe
+/admin/node_modules/
+/admin/dist/
+/site/cache/*
+!/site/cache/.gitkeep
+/site/public/uploads/*
+!/site/public/uploads/.gitkeep
+/vendor/
+/.idea/

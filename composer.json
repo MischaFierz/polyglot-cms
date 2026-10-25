@@ -1,0 +1,40 @@
+{
+    "name": "mischafierz/polyglot-cms",
+    "description": "A CMS for websites: Go content API, PHP themes, TypeScript admin panel, SQLite storage.",
+    "type": "project",
+    "keywords": ["cms", "markdown", "blog", "themes", "sqlite"],
+    "homepage": "https://github.com/MischaFierz/polyglot-cms",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cms\\Site\\": "site/src/"
+        },
+        "files": [
+            "site/src/helpers.php"
+        ]
+    },
+    "config": {
+        "process-timeout": 0,
+        "sort-packages": true
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "@php -r \"echo PHP_EOL, 'Polyglot CMS is ready. Next steps (needs Go >= 1.22 and Node >= 18):', PHP_EOL, '  composer build   # compile the admin panel and the API', PHP_EOL, '  composer api     # start the API on :8080 (admin at /admin/)', PHP_EOL, '  composer serve   # start the website on :8000', PHP_EOL, 'Or simply: docker compose up --build', PHP_EOL;\""
+        ],
+        "build": [
+            "npm --prefix admin install",
+            "npm --prefix admin run build",
+            "go -C api mod tidy"
+        ],
+        "api": "go -C api run .",
+        "serve": "@php -S localhost:8000 -t site/public site/public/index.php"
+    },
+    "scripts-descriptions": {
+        "build": "Install and compile the TypeScript admin panel and fetch the Go API's dependencies",
+        "api": "Start the Go content API on :8080",
+        "serve": "Start the PHP website on :8000"
+    }
+}
